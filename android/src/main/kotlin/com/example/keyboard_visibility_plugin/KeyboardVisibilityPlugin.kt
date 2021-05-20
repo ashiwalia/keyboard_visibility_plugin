@@ -86,14 +86,14 @@ class KeyboardVisibilityPlugin : FlutterPlugin, EventChannel.StreamHandler,
     }
 
     override fun onActivityStopped(activity: Activity) {
-        unregisterListener()
+
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
     }
 
     override fun onActivityDestroyed(activity: Activity) {
-        unregisterListener()
+
     }
 
     override fun onGlobalLayout() {
@@ -124,10 +124,14 @@ class KeyboardVisibilityPlugin : FlutterPlugin, EventChannel.StreamHandler,
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
+        activity = null
+
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-        activity = null
+        activity = binding.activity as FlutterActivity
+
+        activity?.application?.registerActivityLifecycleCallbacks(this)
     }
 
     override fun onDetachedFromActivity() {
